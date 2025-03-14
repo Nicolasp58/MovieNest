@@ -1,0 +1,35 @@
+<footer th:fragment="footer" class="bg-primary">
+    <div class="container py-4">
+        <div class="row align-items-center">
+            
+            <div class="col-md-4 text-center">
+                <h6 class="text-uppercase fw-bold">MovieNest</h6>
+                <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #0d6efd; height: 2px"
+                />
+                <p>MovieNest is your ultimate streaming destination, offering a vast collection of movies available for purchase. Enjoy the latest blockbusters and timeless classics anytime, anywhere, with seamless streaming and high-quality viewing. Join us for an unmatched movie experience!</p>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <h6 class="text-uppercase fw-bold">Useful links</h6>
+                <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #0d6efd; height: 2px"
+                />
+                <p><a th:href="@{/profile}" class="text-white text-decoration-none">Your Profile</a></p>
+                <p><a th:href="@{/movies}" class="text-white text-decoration-none">Our Movies</a></p>
+                <p><a th:href="@{/about}" class="text-white text-decoration-none">About Us</a></p>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <h6 class="text-uppercase fw-bold">Contact</h6>
+                <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #0d6efd; height: 2px"/>
+                <p>E-mail: contact@movienest.com</p>
+                <p>Phone: + 01 234 567 88</p>
+                <p><a href="https://www.instagram.com/" class="text-white text-decoration-none">Follow Us!</a></p>
+            </div>
+        </div>
+    </div>
+
+</footer>

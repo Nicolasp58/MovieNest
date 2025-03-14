@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/app.css?v=1}">
+
+    <title th:text="${title} ?: 'About MovieNest'"></title>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    
+    <main class="container my-5">
+        <h1 class="text-center mb-4">About MovieNest</h1>
+        
+        <!-- Introducción -->
+        <section class="text-center mb-5">
+            <p>Your ultimate destination for buying and streaming the latest movies anytime, anywhere.</p>
+        </section>
+        
+        <!-- Nuestra Historia -->
+        <section class="mb-5">
+            <h2>Our Story</h2>
+            <p>MovieNest was founded with the goal of making movie purchases and streaming more accessible, offering a vast collection of blockbuster hits and timeless classics. Our journey began with a simple idea: to provide a seamless and enjoyable movie-watching experience for audiences around the world. Over the years, we have grown into a trusted platform where movie lovers can find their favorite films, from Hollywood blockbusters to indie gems.</p>
+            <p>We understand the importance of convenience and quality. That's why we have partnered with major film studios and independent creators to bring you an ever-expanding library of content. Our commitment to innovation drives us to enhance our platform continuously, ensuring that users enjoy a smooth and immersive experience, whether they are watching from their smart TV, laptop, or mobile device.</p>
+        </section>
+        
+        <!-- Qué ofrecemos -->
+        <section class="mb-5">
+            <h2>What We Offer</h2>
+            <ul>
+                <li>Buy and stream movies in HD and 4K.</li>
+                <li>Latest movie releases and timeless classics.</li>
+                <li>No ads, just uninterrupted entertainment.</li>
+            </ul>
+        </section>
+        
+        <!-- Por qué elegirnos -->
+        <section class="mb-5">
+            <h2>Why Choose Us?</h2>
+            <p>At MovieNest, we prioritize your viewing experience with high-quality streaming, secure payments, and 24/7 customer support. Our platform is designed for ease of use, allowing you to browse, purchase, and watch your favorite movies effortlessly.</p>
+            <p>We also offer flexible pricing options to cater to different viewing needs, from individual movie purchases to special discounts on curated collections. Our commitment to customer satisfaction means that we are constantly improving our service, adding new features, and ensuring that you have access to the best possible entertainment experience.</p>
+            <p>Unlike other platforms, we believe in providing a transparent and user-friendly service with no hidden fees. Our customer support team is always ready to assist you with any questions or technical issues, making sure you have a hassle-free experience from start to finish.</p>
+        </section>
+        
+    </main>
+    
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
