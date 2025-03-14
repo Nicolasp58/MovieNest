@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/app.css?v=1}">
+
+    <title th:text="${title}">Movie details</title>
+</head>
+<body> 
+    <div th:replace="~{fragments/header :: header}"></div> 
+    
+    <div class="container my-4"> 
+        <div class="card mb-4"> 
+            <div class="row g-0"> 
+                <div class="col-md-4"> 
+                    <img src="https://placehold.co/400x400" class="img-fluid rounded-start" alt="Movie Image"> 
+                </div> 
+                <div class="col-md-8 d-flex flex-column" style="min-height: 100%;"> 
+                    <div class="card-body text-black"> 
+                        <h5 class="card-title" th:text="${movie.name}">Movie Name</h5> 
+                        <h6 class="card-description" th:text="${movie.description}">Movie Description</h6>
+                        <p class="card-text"> 
+                            <strong>Price: $</strong> 
+                            <span th:text="${movie.price}">0</span> 
+                        </p> 
+                    </div> 
+                    <div class="row" style="margin-top: 30%;">
+                        <div class="col-md-8">
+                            <form th:action="@{'/cart/add/' + ${movie.id}}" method="post"> 
+                                <button type="submit" class="btn btn-primary" style="margin-left: 15px;">Add to Cart</button> 
+                            </form> 
+                        </div>
+                        <div class="col">
+                            <form th:action="@{/movies/{id}/delete(id=${movie.id})}" method="post">
+                                <button type="submit" class="btn btn-primary delete text-white" 
+                                style="margin-left: 10; border-color: #c03409; background-color: #c03409;"><b>Delete Movie</b></button>
+                            </form>
+                        </div>
+                    </div> 
+                </div> 
+            </div>
+        </div> 
+        
+    </div> 
+    
+    
+    <!-- Bootstrap Bundle with Popper --> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> 
+    </body> 
+    </html>

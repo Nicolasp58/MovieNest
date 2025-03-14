@@ -1,0 +1,40 @@
+.navbar {
+    background-color: #040827 !important;
+}
+
+body {
+    background-color: #071d33 !important;
+    color: white; 
+}
+
+.bg-secondary {
+    background-color: #071d33 !important;
+}
+
+.bg-primary {
+    background-color: #040827 !important;
+}
+
+.delete {
+    background-color: #c03409;
+}
+
+nav{
+    font-weight: 700;
+}
+            
+.img-card{
+    height: 18vw;
+    object-fit: cover;
+}
+
+.startButton{
+    background-color: #040827 !important;
+    color: white;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
