@@ -14,6 +14,9 @@ public class MovieForm{
     @NotEmpty(message = "The movie desciption is required")
     private String description;
 
+    @NotEmpty(message = "The movie genre is required")
+    private String genre;
+
     @NotNull(message = "The price is required")
     @Positive(message = "Price must be greater than 0")
     private Double price;
@@ -33,6 +36,14 @@ public class MovieForm{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public Double getPrice() {

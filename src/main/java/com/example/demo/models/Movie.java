@@ -15,6 +15,7 @@ public class Movie{
 
     private String name;
     private String description;
+    private String genre;
     private Integer price;
 
     @OneToMany (mappedBy = "movie", cascade = CascadeType.ALL)
@@ -35,6 +36,7 @@ public class Movie{
     public Movie(String name, String description, Integer price) {
         this.name = name;
         this.description = description;
+        this.genre = genre;
         this.price = price;
     }
 
@@ -51,6 +53,10 @@ public class Movie{
         return description;
     }
 
+    public String getGenre() {
+        return genre;
+    }
+
     public Integer getPrice() {
         return price;
     }
@@ -61,6 +67,10 @@ public class Movie{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public void setPrice(Integer price) {

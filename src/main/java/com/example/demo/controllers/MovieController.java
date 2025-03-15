@@ -53,8 +53,8 @@ public class MovieController {
 
     @PostMapping("/movies") 
     public String save(Movie movie) {  
-        if (movie.getName() == null || movie.getName().isEmpty() || movie.getDescription() == null || movie.getDescription().isEmpty() || movie.getPrice() == null) { 
-            throw new RuntimeException("Name, Description and Price are required"); 
+        if (movie.getName() == null || movie.getName().isEmpty() || movie.getDescription() == null || movie.getDescription().isEmpty() || movie.getGenre() == null || movie.getGenre().isEmpty() || movie.getPrice() == null) { 
+            throw new RuntimeException("Name, Description, Genre and Price are required"); 
         } 
         movieRepository.save(movie); 
         return "redirect:/movies/success"; 
