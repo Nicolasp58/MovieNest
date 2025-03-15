@@ -17,6 +17,17 @@ public class Movie{
     private String description;
     private Integer price;
 
+    @OneToMany (mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     //Constructor
     public Movie() {
     }
