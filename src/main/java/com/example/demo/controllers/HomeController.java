@@ -17,4 +17,10 @@ public class HomeController {
         model.addAttribute("subtitle", "Welcome to MovieNest");
         return "home/index";
     }
+
+    @GetMapping("/about")
+    public String about(Model model) {
+        model.addAttribute("title", "About MovieNest");
+        return "home/about";
+    }
 }

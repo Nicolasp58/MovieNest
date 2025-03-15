@@ -32,5 +32,6 @@
         <a th:if="${not #maps.isEmpty(cartMovies)}" th:href="@{/cart/removeAll}">Remove all movies from cart</a>
     </div> 
 
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
