@@ -33,7 +33,7 @@ public class Movie{
     public Movie() {
     }
 
-    public Movie(String name, String description, Integer price) {
+    public Movie(String name, String description, String genre, Integer price) {
         this.name = name;
         this.description = description;
         this.genre = genre;
