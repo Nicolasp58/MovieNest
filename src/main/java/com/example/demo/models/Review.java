@@ -20,7 +20,7 @@ public class Review {
     public Review() {
     }
 
-    public Review(String description, Movie movie) {
+    public Review(String description, Movie movie, Integer rating) {
         this.description = description;
         this.movie = movie;
         this.rating = rating;
