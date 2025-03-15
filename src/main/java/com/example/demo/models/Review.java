@@ -23,6 +23,7 @@ public class Review {
     public Review(String description, Movie movie) {
         this.description = description;
         this.movie = movie;
+        this.rating = rating;
     }
 
     //Getters y Setters
