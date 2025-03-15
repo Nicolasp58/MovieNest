@@ -15,11 +15,11 @@
 <body> 
     <div th:replace="~{fragments/header :: header}"></div> 
     
-    <div class="container my-4"> 
+    <div class="container my-5"> 
         <div class="row justify-content-center"> 
             <div class="col-md-8"> 
                 <div class="card text-center"> 
-                    <div class="card-header text-black">Create Movie</div> 
+                    <div class="card-header text-black fw-bold">Create Movie</div> 
                     <div class="card-body"> 
     <form th:action="@{/movies}" method="post"> 
         <label for="name" style="color: black;">Movie name:</label><br>
@@ -42,5 +42,6 @@
         </div>
     </div> 
     
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body> 
 </html>

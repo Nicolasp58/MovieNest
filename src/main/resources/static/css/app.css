@@ -38,3 +38,11 @@ nav{
     justify-content: center;
     align-items: center;
 }
+
+.n-card {
+    flex: 1 1 auto;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+    background-color: #2C3042;
+    border-color: #2C3042;
+    width: 100%;
+}

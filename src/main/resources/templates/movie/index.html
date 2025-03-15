@@ -19,13 +19,14 @@
     <h2 class="text-center"  style="margin-bottom: 20px;" th:text="${subtitle}"></h2> 
     <div class="row"> 
         <div class="col-md-4 col-lg-3 mb-2" th:each="movie : ${movies}"> 
-            <div class="card"> 
-                <img src="https://placehold.co/600x400" class="card-img-top img-card"> 
-                <div class="card-body text-center"> 
-                    <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn text-white" style="background-color: #060c38;" th:text="${movie.name}"> 
-                    </a>
-                </div> 
-            </div> 
+            <a th:href="@{/movies/{id}(id=${movie.id})}" class="text-decoration-none">
+                <div class="card" style="border-color: #2C3042;"> 
+                    <img src="https://placehold.co/600x400" class="card-img-top img-card"> 
+                    <div class="n-card text-center text-white"> 
+                        <span class="fw-bold" th:text="${movie.name}"></span>
+                    </div> 
+                </div>
+            </a> 
         </div> 
     </div> 
 </div> 
