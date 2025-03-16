@@ -36,7 +36,7 @@ public class CartController {
             }
         }
 
-        model.addAttribute("title", "Cart - Online Store");
+        model.addAttribute("title", "Cart - MovieNest");
         model.addAttribute("subtitle", "Shopping Cart");
         model.addAttribute("movies", movies);
         model.addAttribute("cartMovies", cartMovies);

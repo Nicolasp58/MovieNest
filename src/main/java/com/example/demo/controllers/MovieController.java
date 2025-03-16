@@ -34,7 +34,7 @@ public class MovieController {
     @GetMapping("/movies/{id}") 
     public String show(@PathVariable("id") Long id, Model model) { 
         Movie movie = movieRepository.findById(id) .orElseThrow(() -> new RuntimeException("Movie not found")); 
-        model.addAttribute("title", movie.getName() + " - Online Store"); 
+        model.addAttribute("title", movie.getName() + " - MovieNest"); 
         model.addAttribute("subtitle", movie.getName() + " - Movie information"); 
         model.addAttribute("movie", movie);
         return "movie/show";    
@@ -42,6 +42,7 @@ public class MovieController {
     
     @GetMapping("/movies/create")
     public String createMovieForm(Model model) { 
+        model.addAttribute("title", "Add Movie");
         model.addAttribute("movie", new Movie()); 
         return "movie/create"; 
     }

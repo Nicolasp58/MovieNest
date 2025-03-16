@@ -1,9 +1,11 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 <!-- header -->
 <th:block th:fragment="header">
   <nav th:fragment="header" class="navbar navbar-expand-lg navbar-dark navbar py-4">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <img th:src="@{/img/noBgColor.png}" alt="MovieNest Logo" class="logo-img img-fluid" style="max-width: 200px;">
+        <img th:src="@{/img/logo.png}" alt="MovieNest Logo" class="logo-img img-fluid" style="max-width: 200px;">
     </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
               aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,11 +13,21 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto">
-          <a class="nav-link active" style="margin-right: 10px;" th:href="@{/}">Home</a>
-          <a class="nav-link active" style="margin-right: 10px;" th:href="@{/movies}">Movies</a>
-          <a class="nav-link active" style="margin-right: 10px;" th:href="@{/cart}">Cart</a>
-          <a class="nav-link active" style="margin-right: 10px;" th:href="@{/profile}">Profile</a>
-          <a class="nav-link active" th:href="@{/movies/create}">Add Movie</a>
+          <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/}">
+            <i class="bi bi-house"></i> Home
+        </a>
+        <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/movies}">
+            <i class="bi bi-film"></i> Movies
+        </a>
+        <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/cart}">
+            <i class="bi bi-cart"></i> Cart
+        </a>
+        <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/profile}">
+            <i class="bi bi-person"></i> Profile
+        </a>
+        <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/movies/create}">
+            <i class="bi bi-plus-circle"></i> Add Movie
+        </a>        
         </div>
       </div>
     </div>
