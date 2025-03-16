@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalles del Producto</title>
+</head>
+<body>
+<h2 th:text="${product.name}"></h2>
+<p th:text="${product.description}"></p>
+<p>Precio: <span th:text="${product.price}"></span></p>
+<form action="/cart/add" method="post">
+  <input type="hidden" name="productId" th:value="${product.id}">
+  <button type="submit">Añadir al Carrito</button>
+</form>
+<a href="/product">Volver</a>
+</body>
+</html>

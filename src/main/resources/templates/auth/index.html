@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+<header class="bg-gray-800 p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Tienda Online</h1>
+    <nav>
+        <a href="/product" class="text-white px-4">Ver Productos</a>
+        <a href="/cart" class="text-white px-4">Ver Carrito</a>
+        <a href="/logout" class="text-white px-4">Cerrar Sesión</a>
+    </nav>
+</header>
+
+<main class="flex flex-col items-center justify-center min-h-screen">
+    <h1 class="text-4xl font-bold" th:text="${title}"></h1>
+    <p class="text-lg mt-4">Bienvenido a la tienda en línea.</p>
+    <div class="mt-6">
+        <a href="/product" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Ver Productos</a>
+        <a href="/cart" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded ml-2">Ver Carrito</a>
+        <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded ml-2">Cerrar Sesión</a>
+    </div>
+</main>
+
+<footer class="bg-gray-800 p-4 text-center mt-10">
+    <p>&copy; 2025 Tienda Online. Todos los derechos reservados.</p>
+</footer>
+</body>
+</html>
