@@ -1,11 +1,11 @@
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 .navbar {
-    background-color: #040827 !important;
+    background-color: #111827 !important;
 }
 
 body {
-    background-color: #2C3042 !important;
+    background-color: #1E293B !important;
     color: white; 
 }
 
@@ -14,7 +14,7 @@ body {
 }
 
 .bg-primary {
-    background-color: #040827 !important;
+    background-color: #111827 !important;
 }
 
 .delete {
@@ -44,7 +44,7 @@ nav{
 .n-card {
     flex: 1 1 auto;
     padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-    background-color: #2C3042;
-    border-color: #2C3042;
+    background-color: #1E293B;
+    border-color: #1E293B;
     width: 100%;
 }
