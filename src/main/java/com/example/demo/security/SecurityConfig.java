@@ -19,7 +19,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/product/**").hasRole("USER") // Solo usuarios pueden ver productos
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Solo administradores pueden gestionar productos
-                        .requestMatchers("/auth/**", "/").permitAll() // Cualquiera puede ver login y registro
+                        .requestMatchers("/auth/**", "/", "/img/**").permitAll() // Cualquiera puede ver login y registro
                         .anyRequest().authenticated() // Todas las demás rutas requieren autenticación
                 )
                 .formLogin(login -> login
