@@ -15,7 +15,6 @@
     <h2>Movies in Cart</h2>
     <ul>
         <li th:each="entry : ${cartMovies}">
-            <span>Id: <span th:text="${entry.key}"></span> - </span>
             <span>Name: <span th:text="${entry.value.name}"></span> - </span>
             <span>Price: $<span th:text="${entry.value.price}"></span></span>
         </li>
@@ -26,12 +25,12 @@
 
         <form th:action="@{/cart/checkout}" method="post">
             <label for="paymentMethod">Choose Payment Method:</label>
-            <select name="paymentMethod" id="paymentMethod" class="form-control mb-2">
+            <select name="paymentMethod" id="paymentMethod" class="form-control mb-2" style="width: 200px;">
                 <option value="Credit Card">Credit Card</option>
                 <option value="PayPal">PayPal</option>
                 <option value="Bank Transfer">Bank Transfer</option>
             </select>
-            <button type="submit" class="btn btn-success">Pay</button>
+            <button type="submit" class="btn btn-success" style="margin-top: 15px; margin-bottom: 15px;">Pay</button>
         </form>
     </div>
 
