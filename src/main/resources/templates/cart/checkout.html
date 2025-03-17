@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout - MovieNest</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+  <h1>Checkout</h1>
+  <p>Total Amount: $<span th:text="${totalPrice}"></span></p>
+
+  <form th:action="@{/cart/checkout}" method="post">
+    <label for="paymentMethod">Choose Payment Method:</label>
+    <select id="paymentMethod" name="paymentMethod" required>
+      <option value="Credit Card">Credit Card</option>
+      <option value="PayPal">PayPal</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+    </select>
+
+    <button type="submit">Confirm Payment</button>
+  </form>
+
+  <a th:href="@{/cart}">Back to Cart</a>
+</div>
+</body>
+</html>
