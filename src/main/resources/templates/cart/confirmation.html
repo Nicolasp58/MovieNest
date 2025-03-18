@@ -5,12 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
   <title>Payment Confirmation</title>
+  <style>
+    body {
+      background-color: #0b132b;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .confirmation-box {
+      background-color: #1c2541;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      max-width: 500px;
+    }
+    .icon {
+      font-size: 60px;
+      color: #00c896;
+      margin-bottom: 20px;
+    }
+    .btn-custom {
+      background-color: #00c896;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .btn-custom:hover {
+      background-color: #009a7d;
+    }
+  </style>
 </head>
 <body>
-<div class="container text-center my-5">
+<div class="confirmation-box">
+  <div class="icon">✅</div>
   <h2 class="text-success">Payment Successful!</h2>
-  <p th:text="${message}" class="lead"></p>
-  <a href="/" class="btn btn-primary">Go to Home</a>
+  <p class="lead" th:text="${message}">Your transaction was completed successfully.</p>
+  <a href="/" class="btn btn-custom mt-3">Go to Home</a>
 </div>
 </body>
 </html>
