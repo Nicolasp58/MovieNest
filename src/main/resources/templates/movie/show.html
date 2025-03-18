@@ -18,17 +18,17 @@
     <div th:replace="~{fragments/header :: header}"></div> 
     
     <div class="container my-4"> 
-        <div class="card mb-4"> 
+        <div class="card mb-4" style="border-color: #1E293B;"> 
             <div class="row g-0"> 
                 <div class="col-md-4"> 
                     <img th:src="@{/{filename}(filename=${movie.imagePath})}" class="img-fluid rounded-start" alt="Movie Image">
                 </div> 
                 <div class="col-md-8 d-flex flex-column" style="min-height: 100%;"> 
                     <div class="card-body text-black"> 
-                        <h5 class="card-title" th:text="${movie.name}">Movie Name</h5> 
-                        <h6 class="card-description" th:text="${movie.description}">Movie Description</h6>
-                        <h6 class="card-genre" th:text="${movie.genre}">Movie Genre</h6>
-                        <p class="card-text"> 
+                        <h3 class="card-title" style="padding-bottom: 5px; border-bottom: 2px solid black !important;" th:text="${movie.name}">Movie Name</h3>
+                        <h5 class="card-genre" style="padding-bottom: 5px;" th:text="${movie.genre}">Movie Genre</h5> 
+                        <h6 class="card-description" style="padding-bottom: 5px;" th:text="${movie.description}">Movie Description</h6>
+                        <p class="card-text" style="padding-bottom: 5px;"> 
                             <strong>Price: $</strong> 
                             <span th:text="${movie.price}">0</span> 
                         </p> 

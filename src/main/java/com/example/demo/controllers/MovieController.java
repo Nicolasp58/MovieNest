@@ -59,7 +59,10 @@ public class MovieController {
 
     @PostMapping("/movies") 
     public String save(@ModelAttribute Movie movie, @RequestParam("image") MultipartFile image) {  
-        if (movie.getName() == null || movie.getName().isEmpty() || movie.getDescription() == null || movie.getDescription().isEmpty() || movie.getGenre() == null || movie.getGenre().isEmpty() || movie.getPrice() == null) { 
+        if (movie.getName() == null || movie.getName().isEmpty() || 
+            movie.getGenre() == null || movie.getGenre().isEmpty() ||
+            movie.getDescription() == null || movie.getDescription().isEmpty() ||
+            movie.getPrice() == null) { 
             throw new RuntimeException("Name, Description, Genre and Price are required"); 
         }
         if (!image.isEmpty()) {

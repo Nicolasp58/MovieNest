@@ -11,11 +11,11 @@ public class MovieForm{
     @NotEmpty(message = "The movie name is required")
     private String name;
 
-    @NotEmpty(message = "The movie desciption is required")
-    private String description;
-
     @NotEmpty(message = "The movie genre is required")
     private String genre;
+
+    @NotEmpty(message = "The movie desciption is required")
+    private String description;
 
     @NotNull(message = "The price is required")
     @Positive(message = "Price must be greater than 0")
