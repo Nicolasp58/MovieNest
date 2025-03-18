@@ -1,4 +1,5 @@
 package com.example.demo.controllers;
+
 import com.example.demo.services.PaymentService;
 import com.example.demo.models.Movie;
 import com.example.demo.models.Payment;
@@ -76,17 +77,28 @@ public class CartController {
         session.removeAttribute("cart_movie_data");
         return "redirect:/cart";
     }
+
     @PostMapping("/checkout")
     public String checkout(@RequestParam String paymentMethod, HttpSession session) {
-        Double totalPrice = (Double) session.getAttribute("total_price");
-        if (totalPrice == null || totalPrice == 0.0) {
+        Map<Long, Integer> cartMovieData = (Map<Long, Integer>) session.getAttribute("cart_movie_data");
+
+        if (cartMovieData == null || cartMovieData.isEmpty()) {
             return "redirect:/cart";
         }
 
-        Payment payment = new Payment();
-        payment.setTotalAmount(totalPrice);
-        payment.setPaymentMethod(paymentMethod);
-        paymentService.savePayment(payment);
+        for (Long movieId : cartMovieData.keySet()) {
+            Optional<Movie> movieOpt = movieRepository.findById(movieId);
+            if (movieOpt.isPresent()) {
+                Movie movie = movieOpt.get();
+
+                Payment payment = new Payment();
+                payment.setTotalAmount(movie.getPrice() * cartMovieData.get(movieId)); // Precio total basado en la cantidad
+                payment.setPaymentMethod(paymentMethod);
+                payment.setMovie(movie); // Asociamos la película comprada
+
+                paymentService.savePayment(payment);
+            }
+        }
 
         session.removeAttribute("cart_movie_data");
         session.removeAttribute("total_price");
@@ -99,5 +111,4 @@ public class CartController {
         model.addAttribute("message", "Payment successful!");
         return "cart/confirmation";
     }
-
 }
