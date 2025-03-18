@@ -3,13 +3,19 @@ package com.example.demo.controllers;
 import com.example.demo.services.PaymentService;
 import com.example.demo.models.Movie;
 import com.example.demo.models.Payment;
+import com.example.demo.models.User;
 import com.example.demo.repositories.MovieRepository;
 import com.example.demo.repositories.PaymentRepository;
+import com.example.demo.repositories.UserRepository;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +33,9 @@ public class CartController {
 
     @Autowired
     private PaymentRepository paymentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public String index(HttpSession session, Model model) {
@@ -79,32 +88,53 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public String checkout(@RequestParam String paymentMethod, HttpSession session) {
-        Map<Long, Integer> cartMovieData = (Map<Long, Integer>) session.getAttribute("cart_movie_data");
+public String checkout(@RequestParam String paymentMethod, HttpSession session) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (cartMovieData == null || cartMovieData.isEmpty()) {
-            return "redirect:/cart";
-        }
+    if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+        return "redirect:/auth/login"; // Si no está autenticado, redirige al login
+    }
 
-        for (Long movieId : cartMovieData.keySet()) {
-            Optional<Movie> movieOpt = movieRepository.findById(movieId);
-            if (movieOpt.isPresent()) {
-                Movie movie = movieOpt.get();
+    String username = auth.getName();
+    Optional<User> userOpt = userRepository.findByUsername(username);
 
-                Payment payment = new Payment();
-                payment.setTotalAmount(movie.getPrice() * cartMovieData.get(movieId)); // Precio total basado en la cantidad
-                payment.setPaymentMethod(paymentMethod);
-                payment.setMovie(movie); // Asociamos la película comprada
+    if (userOpt.isEmpty()) {
+        return "redirect:/cart"; // Si el usuario no existe, lo redirige
+    }
 
-                paymentService.savePayment(payment);
+    User user = userOpt.get();
+    Map<Long, Integer> cartMovieData = (Map<Long, Integer>) session.getAttribute("cart_movie_data");
+
+    if (cartMovieData == null || cartMovieData.isEmpty()) {
+        return "redirect:/cart";
+    }
+
+    for (Long movieId : cartMovieData.keySet()) {
+        Optional<Movie> movieOpt = movieRepository.findById(movieId);
+        if (movieOpt.isPresent()) {
+            Movie movie = movieOpt.get();
+
+            Payment payment = new Payment();
+            payment.setTotalAmount(movie.getPrice() * cartMovieData.get(movieId));
+            payment.setPaymentMethod(paymentMethod);
+            payment.setMovie(movie);
+            paymentService.savePayment(payment);
+
+            // Agregamos el ID de la película a la lista de compras del usuario
+            if (!user.getPurchasedMoviesIds().contains(movieId)) {
+                user.addPurchasedMovie(movieId);
             }
         }
-
-        session.removeAttribute("cart_movie_data");
-        session.removeAttribute("total_price");
-
-        return "redirect:/cart/confirmation";
     }
+
+    // Guardamos los cambios en la base de datos
+    userRepository.save(user);
+
+    session.removeAttribute("cart_movie_data");
+    session.removeAttribute("total_price");
+
+    return "redirect:/cart/confirmation";
+}
 
     @GetMapping("/confirmation")
     public String confirmationPage(Model model) {

@@ -14,6 +14,13 @@ import com.example.demo.models.Movie;
 import com.example.demo.models.Review;
 import com.example.demo.repositories.MovieRepository; 
 import com.example.demo.repositories.ReviewRepository;
+import com.example.demo.models.User;
+import com.example.demo.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Optional;
+import java.util.List;
+
 
 
 @Controller
@@ -24,6 +31,10 @@ public class HomeController {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
 
     @GetMapping("/")
     public String index() {
@@ -53,13 +64,27 @@ public class HomeController {
     @GetMapping("/profile")
     public String profile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-            return "redirect:/auth/login"; // Redirige al login si no está autenticado
-        }
-        String username = auth.getName();
-        model.addAttribute("title", "Your Profile");
-        model.addAttribute("username", username);
-        return "profile/index";
+    if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+        return "redirect:/auth/login"; // Redirige al login si no está autenticado
+    }
+
+    String username = auth.getName();
+    Optional<User> userOpt = userRepository.findByUsername(username);
+
+    if (userOpt.isEmpty()) {
+        return "redirect:/auth/login"; // Si no encuentra el usuario, lo manda a login
+    }
+
+    User user = userOpt.get();
+
+    // Obtener las películas compradas por el usuario
+    List<Movie> purchasedMovies = movieRepository.findAllById(user.getPurchasedMoviesIds());
+
+    model.addAttribute("title", "Your Profile");
+    model.addAttribute("username", username);
+    model.addAttribute("purchasedMovies", purchasedMovies);
+
+    return "profile/index";
     }
 
     @GetMapping("/movies/bought/{id}") 

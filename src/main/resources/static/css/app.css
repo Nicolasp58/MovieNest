@@ -39,6 +39,8 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url("/img/fondo.jpg");
+    background-size: cover;
 }
 
 .n-card {

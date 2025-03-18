@@ -29,11 +29,22 @@
         </div>
 
         <h4 class="py-2">Your Movies:</h4>
-        <div class="alert alert-primary d-inline-block my-2" role="alert" th:if="${#maps.isEmpty(cartMovies)}">
+        <div class="alert alert-primary d-inline-block my-2" role="alert" th:if="${#lists.isEmpty(purchasedMovies)}">
             You dont have any movies.
         </div>
 
-
+        <div class="row" th:if="${not #lists.isEmpty(purchasedMovies)}">
+            <div class="col-md-4 col-lg-3 mb-2" th:each="movie : ${purchasedMovies}">
+                <a th:href="@{/movies/bought/{id}(id=${movie.id})}" class="text-decoration-none">
+                    <div class="card" style="border-color: #1E293B;">
+                        <img th:src="@{/{filename}(filename=${movie.imagePath})}" class="card-img-top img-card" alt="Movie Image" style="height: 375px; object-fit: cover;">
+                        <div class="n-card text-center text-white">
+                            <span class="fw-bold" th:text="${movie.name}"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
     
     <div th:replace="~{fragments/footer :: footer}"></div>

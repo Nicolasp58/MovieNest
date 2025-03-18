@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -11,8 +13,12 @@ public class User {
 
     private String username;
     private String password;
-
     private String role; // Ahora es String en lugar de Role
+
+    @ElementCollection
+    @CollectionTable(name = "user_purchased_movies", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "movie_id")
+    private List<Long> purchasedMoviesIds = new ArrayList<>();
 
     public User() {}
 
@@ -46,5 +52,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Long> getPurchasedMoviesIds() {
+        return purchasedMoviesIds;
+    }
+
+    public void addPurchasedMovie(Long movieId) {
+        this.purchasedMoviesIds.add(movieId);
     }
 }
