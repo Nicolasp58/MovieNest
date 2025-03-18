@@ -3,13 +3,27 @@ package com.example.demo.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.models.Movie;
+import com.example.demo.models.Review;
+import com.example.demo.repositories.MovieRepository; 
+import com.example.demo.repositories.ReviewRepository;
+
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @GetMapping("/")
     public String index() {
@@ -47,5 +61,33 @@ public class HomeController {
         model.addAttribute("username", username);
         return "profile/index";
     }
-    
+
+    @GetMapping("/movies/bought/{id}") 
+    public String show(@PathVariable("id") Long id, Model model) { 
+        Movie movie = movieRepository.findById(id) .orElseThrow(() -> new RuntimeException("Movie not found")); 
+        model.addAttribute("title", movie.getName() + " - MovieNest"); 
+        model.addAttribute("subtitle", movie.getName() + " - Movie information"); 
+        model.addAttribute("movie", movie);
+        return "profile/movies";    
+    }
+
+    @PostMapping("/movies/{id}/reviews")
+    public String attachReview(
+            @PathVariable("id") Long id, 
+            @RequestParam("description") String description, 
+            @RequestParam("rating") int rating) {
+        
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
+
+        Review review = new Review();
+        review.setMovie(movie);  // Asignar la película a la reseña
+        review.setDescription(description);
+        review.setRating(rating);
+
+        reviewRepository.save(review);
+        
+        return "redirect:/movies/bought/" + id; 
+    }
+
 }
