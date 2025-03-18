@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class HomeController {
@@ -33,4 +35,17 @@ public class HomeController {
         model.addAttribute("title", "About MovieNest");
         return "home/about";
     }
+
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            return "redirect:/auth/login"; // Redirige al login si no está autenticado
+        }
+        String username = auth.getName();
+        model.addAttribute("title", "Your Profile");
+        model.addAttribute("username", username);
+        return "profile/index";
+    }
+    
 }
