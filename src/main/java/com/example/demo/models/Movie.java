@@ -17,6 +17,7 @@ public class Movie{
     private String description;
     private String genre;
     private Integer price;
+    private String imagePath;
 
     @OneToMany (mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
@@ -75,6 +76,14 @@ public class Movie{
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
 }

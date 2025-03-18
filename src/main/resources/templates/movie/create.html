@@ -23,7 +23,7 @@
                 <div class="card text-center"> 
                     <div class="card-header text-black fw-bold">Add Movie</div> 
                     <div class="card-body"> 
-    <form th:action="@{/movies}" method="post"> 
+    <form th:action="@{/movies}" method="post" enctype="multipart/form-data"> 
         <label for="name" style="color: black;">Movie name:</label><br>
         <input type="text" id="name" name="name" required/><br><br>
         
@@ -35,6 +35,9 @@
 
         <label for="price" style="color: black;">Price:</label><br> 
         <input type="number" id="price" name="price" required/><br><br>
+
+        <label for="image" style="color: black;">Upload Image:</label><br>
+        <input type="file" id="image" name="image" accept="image/*" required/><br><br>
 
         <button type="submit">Save</button> 
     </form> 
