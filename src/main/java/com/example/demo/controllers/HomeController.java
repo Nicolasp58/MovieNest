@@ -38,21 +38,20 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-        // Verifica si el usuario ya ha iniciado sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-            return "redirect:/auth/register"; // Si no está autenticado, lo manda a registrarse
+            return "redirect:/auth/register";
         }
 
-        return "redirect:/home"; // Si ya está autenticado, lo manda a home
+        return "redirect:/home";
     }
 
     @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("title", "Welcome to MovieNest");
         model.addAttribute("subtitle", "Your ultimate movie experience!");
-        return "home/index"; // Asegura que la vista home/index.html se renderice correctamente
+        return "home/index";
     }
 
     @GetMapping("/about")
@@ -77,7 +76,6 @@ public class HomeController {
 
     User user = userOpt.get();
 
-    // Obtener las películas compradas por el usuario
     List<Movie> purchasedMovies = movieRepository.findAllById(user.getPurchasedMoviesIds());
 
     model.addAttribute("title", "Your Profile");
@@ -106,7 +104,7 @@ public class HomeController {
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
 
         Review review = new Review();
-        review.setMovie(movie);  // Asignar la película a la reseña
+        review.setMovie(movie);
         review.setDescription(description);
         review.setRating(rating);
 

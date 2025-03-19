@@ -10,28 +10,28 @@
 <body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
 <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
   <img th:src="@{/img/logo.png}" alt="MovieNest Logo" style="padding-bottom: 20px;">
-  <h2 class="text-2xl font-bold text-center mb-4">Iniciar Sesión</h2>
+  <h2 class="text-2xl font-bold text-center mb-4">Log In</h2>
 
   <!-- Mensaje de error -->
-  <p th:if="${param.error}" class="text-red-500 text-center">Usuario o contraseña incorrectos</p>
+  <p th:if="${param.error}" class="text-red-500 text-center">User or password failed</p>
 
   <form th:action="@{/login}" method="post" class="flex flex-col">
-    <label for="username" class="mb-1">Usuario:</label>
+    <label for="username" class="mb-1">User:</label>
     <div class="flex items-center bg-gray-700 text-white border border-gray-600 rounded mb-4 p-2">
       <i class="bi bi-person-fill mr-2"></i>
       <input type="text" id="username" name="username" required class="bg-gray-700 text-white outline-none flex-1">
     </div>
 
-    <label for="password" class="mb-1">Contraseña:</label>
+    <label for="password" class="mb-1">Password:</label>
     <div class="flex items-center bg-gray-700 text-white border border-gray-600 rounded mb-4 p-2">
       <i class="bi bi-lock-fill mr-2"></i>
       <input type="password" id="password" name="password" required class="bg-gray-700 text-white outline-none flex-1">
     </div>
 
-    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" style="margin-top: 8px;">Iniciar Sesión</button>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" style="margin-top: 8px;">Log in</button>
   </form>
 
-  <p class="text-center mt-4">¿No tienes cuenta? <a th:href="@{/auth/register}" class="text-blue-400 hover:underline">Regístrate aquí</a></p>
+  <p class="text-center mt-4">Dont have an account? <a th:href="@{/auth/register}" class="text-blue-400 hover:underline">Register here</a></p>
 </div>
 </body>
 </html>

@@ -92,14 +92,14 @@ public String checkout(@RequestParam String paymentMethod, HttpSession session) 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-        return "redirect:/auth/login"; // Si no está autenticado, redirige al login
+        return "redirect:/auth/login";
     }
 
     String username = auth.getName();
     Optional<User> userOpt = userRepository.findByUsername(username);
 
     if (userOpt.isEmpty()) {
-        return "redirect:/cart"; // Si el usuario no existe, lo redirige
+        return "redirect:/cart";
     }
 
     User user = userOpt.get();
@@ -120,7 +120,6 @@ public String checkout(@RequestParam String paymentMethod, HttpSession session) 
             payment.setMovie(movie);
             paymentService.savePayment(payment);
 
-            // Agregamos el ID de la película a la lista de compras del usuario
             if (!user.getPurchasedMoviesIds().contains(movieId)) {
                 user.addPurchasedMovie(movieId);
             }

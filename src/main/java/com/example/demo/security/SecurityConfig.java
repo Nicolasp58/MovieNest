@@ -17,15 +17,15 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/product/**").hasRole("USER") // Solo usuarios pueden ver productos
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // Solo administradores pueden gestionar productos
-                        .requestMatchers("/auth/**", "/", "/img/**").permitAll() // Cualquiera puede ver login y registro
-                        .anyRequest().authenticated() // Todas las demás rutas requieren autenticación
+                        .requestMatchers("/product/**").hasRole("USER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/auth/**", "/", "/img/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home", true) // Ahora redirige correctamente
+                        .defaultSuccessUrl("/home", true)
                         .failureUrl("/auth/login?error=true")
                         .permitAll()
                 )
@@ -33,7 +33,7 @@ public class SecurityConfig {
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login") // Redirige a login después de cerrar sesión
+                        .logoutSuccessUrl("/auth/login")
                         .permitAll()
                 );
 

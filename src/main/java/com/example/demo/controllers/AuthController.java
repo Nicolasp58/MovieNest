@@ -34,7 +34,7 @@ public class AuthController {
             return "auth/register";
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("USER"); // Guarda "USER" como String en la base de datos
+        user.setRole("USER");
         userRepository.save(user);
         return "redirect:/auth/login";
     }
