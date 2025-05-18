@@ -12,44 +12,43 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-    <title th:text="${title} ?: 'About MovieNest'"></title>
+    <title th:text="#{about.title}">About MovieNest</title>
 </head>
 <body>
     <div th:replace="~{fragments/header :: header}"></div>
     
     <main class="container my-5">
-        <h1 class="text-center mb-4">About MovieNest</h1>
+        <h1 class="text-center mb-4" th:text="#{about.title}">About MovieNest</h1>
         
         <!-- Introducción -->
         <section class="text-center mb-5">
-            <p>Your ultimate destination for buying and streaming the latest movies anytime, anywhere.</p>
+            <p th:text="#{about.intro}">Your ultimate destination for buying and streaming the latest movies anytime, anywhere.</p>
         </section>
         
         <!-- Nuestra Historia -->
         <section class="mb-5">
-            <h2>Our Story</h2>
-            <p>MovieNest was founded with the goal of making movie purchases and streaming more accessible, offering a vast collection of blockbuster hits and timeless classics. Our journey began with a simple idea: to provide a seamless and enjoyable movie-watching experience for audiences around the world. Over the years, we have grown into a trusted platform where movie lovers can find their favorite films, from Hollywood blockbusters to indie gems.</p>
-            <p>We understand the importance of convenience and quality. That's why we have partnered with major film studios and independent creators to bring you an ever-expanding library of content. Our commitment to innovation drives us to enhance our platform continuously, ensuring that users enjoy a smooth and immersive experience, whether they are watching from their smart TV, laptop, or mobile device.</p>
+            <h2 th:text="#{about.story.title}">Our Story</h2>
+            <p th:text="#{about.story.text1}">MovieNest was founded...</p>
+            <p th:text="#{about.story.text2}">We understand the importance...</p>
         </section>
         
         <!-- Qué ofrecemos -->
         <section class="mb-5">
-            <h2>What We Offer</h2>
+            <h2 th:text="#{about.offer.title}">What We Offer</h2>
             <ul>
-                <li>Buy and stream movies in HD and 4K.</li>
-                <li>Latest movie releases and timeless classics.</li>
-                <li>No ads, just uninterrupted entertainment.</li>
+                <li th:text="#{about.offer.1}">Buy and stream movies in HD and 4K.</li>
+                <li th:text="#{about.offer.2}">Latest movie releases and timeless classics.</li>
+                <li th:text="#{about.offer.3}">No ads, just uninterrupted entertainment.</li>
             </ul>
         </section>
         
         <!-- Por qué elegirnos -->
         <section class="mb-5">
-            <h2>Why Choose Us?</h2>
-            <p>At MovieNest, we prioritize your viewing experience with high-quality streaming, secure payments, and 24/7 customer support. Our platform is designed for ease of use, allowing you to browse, purchase, and watch your favorite movies effortlessly.</p>
-            <p>We also offer flexible pricing options to cater to different viewing needs, from individual movie purchases to special discounts on curated collections. Our commitment to customer satisfaction means that we are constantly improving our service, adding new features, and ensuring that you have access to the best possible entertainment experience.</p>
-            <p>Unlike other platforms, we believe in providing a transparent and user-friendly service with no hidden fees. Our customer support team is always ready to assist you with any questions or technical issues, making sure you have a hassle-free experience from start to finish.</p>
+            <h2 th:text="#{about.why.title}">Why Choose Us?</h2>
+            <p th:text="#{about.why.text1}">At MovieNest, we prioritize your viewing experience...</p>
+            <p th:text="#{about.why.text2}">We also offer flexible pricing options...</p>
+            <p th:text="#{about.why.text3}">Unlike other platforms, we believe in providing a transparent service...</p>
         </section>
-        
     </main>
     
     <div th:replace="~{fragments/footer :: footer}"></div>

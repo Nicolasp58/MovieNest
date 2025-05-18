@@ -2,32 +2,39 @@
 
 <!-- header -->
 <th:block th:fragment="header">
-  <nav th:fragment="header" class="navbar navbar-expand-lg navbar-dark navbar py-4">
+  <nav class="navbar navbar-expand-lg navbar-dark navbar py-4">
     <div class="container">
       <a class="navbar-brand" href="/">
         <img th:src="@{/img/logo.png}" alt="MovieNest Logo" class="logo-img img-fluid" style="max-width: 200px;">
-    </a>
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
               aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto">
-          <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/}">
-            <i class="bi bi-house"></i> Home
-        </a>
-        <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/movies}">
-            <i class="bi bi-film"></i> Movies
-        </a>
-        <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/cart}">
-            <i class="bi bi-cart"></i> Cart
-        </a>
-        <a class="nav-link active" style="margin-right: 10px; margin-left: 5px;" th:href="@{/profile}">
-            <i class="bi bi-person"></i> Profile
-        </a>        
+          <a class="nav-link active me-2 ms-1" th:href="@{/}">
+            <i class="bi bi-house"></i> <span th:text="#{nav.home}">Home</span>
+          </a>
+          <a class="nav-link active me-2 ms-1" th:href="@{/movies}">
+            <i class="bi bi-film"></i> <span th:text="#{nav.movies}">Movies</span>
+          </a>
+          <a class="nav-link active me-2 ms-1" th:href="@{/cart}">
+            <i class="bi bi-cart"></i> <span th:text="#{nav.viewCart}">Cart</span>
+          </a>
+          <a class="nav-link active me-2 ms-1" th:href="@{/profile}">
+            <i class="bi bi-person"></i> <span th:text="#{nav.profile}">Profile</span>
+          </a>
         </div>
+
+        <!-- Language Switcher -->
+        <form method="get" th:action="@{/change-language}" class="ms-3 d-flex align-items-center">
+          <select name="lang" onchange="this.form.submit()" class="form-select form-select-sm">
+            <option value="en" th:selected="${#locale.language == 'en'}">English</option>
+            <option value="es" th:selected="${#locale.language == 'es'}">Español</option>
+          </select>
+        </form>
       </div>
     </div>
   </nav>
-
 </th:block>
