@@ -7,8 +7,11 @@ import com.example.demo.models.User;
 import com.example.demo.repositories.MovieRepository;
 import com.example.demo.repositories.PaymentRepository;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.util.PdfGenerator;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
-
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,52 +91,66 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-public String checkout(@RequestParam String paymentMethod, HttpSession session) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public void checkout(@RequestParam String paymentMethod,
+                         HttpSession session,
+                         HttpServletResponse response) throws IOException {
 
-    if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-        return "redirect:/auth/login";
-    }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    String username = auth.getName();
-    Optional<User> userOpt = userRepository.findByUsername(username);
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            response.sendRedirect("/auth/login");
+            return;
+        }
 
-    if (userOpt.isEmpty()) {
-        return "redirect:/cart";
-    }
+        String username = auth.getName();
+        Optional<User> userOpt = userRepository.findByUsername(username);
 
-    User user = userOpt.get();
-    Map<Long, Integer> cartMovieData = (Map<Long, Integer>) session.getAttribute("cart_movie_data");
+        if (userOpt.isEmpty()) {
+            response.sendRedirect("/cart");
+            return;
+        }
 
-    if (cartMovieData == null || cartMovieData.isEmpty()) {
-        return "redirect:/cart";
-    }
+        User user = userOpt.get();
+        Map<Long, Integer> cartMovieData = (Map<Long, Integer>) session.getAttribute("cart_movie_data");
 
-    for (Long movieId : cartMovieData.keySet()) {
-        Optional<Movie> movieOpt = movieRepository.findById(movieId);
-        if (movieOpt.isPresent()) {
-            Movie movie = movieOpt.get();
+        if (cartMovieData == null || cartMovieData.isEmpty()) {
+            response.sendRedirect("/cart");
+            return;
+        }
 
-            Payment payment = new Payment();
-            payment.setTotalAmount(movie.getPrice() * cartMovieData.get(movieId));
-            payment.setPaymentMethod(paymentMethod);
-            payment.setMovie(movie);
-            paymentService.savePayment(payment);
+        double total = 0.0;
 
-            if (!user.getPurchasedMoviesIds().contains(movieId)) {
-                user.addPurchasedMovie(movieId);
+        for (Long movieId : cartMovieData.keySet()) {
+            Optional<Movie> movieOpt = movieRepository.findById(movieId);
+            if (movieOpt.isPresent()) {
+                Movie movie = movieOpt.get();
+
+                Payment payment = new Payment();
+                double amount = movie.getPrice() * cartMovieData.get(movieId);
+                payment.setTotalAmount(amount);
+                payment.setPaymentMethod(paymentMethod);
+                payment.setMovie(movie);
+                paymentService.savePayment(payment);
+
+                total += amount;
+
+                if (!user.getPurchasedMoviesIds().contains(movieId)) {
+                    user.addPurchasedMovie(movieId);
+                }
             }
         }
+
+        userRepository.save(user);
+        session.removeAttribute("cart_movie_data");
+        session.removeAttribute("total_price");
+
+        // ✅ Generar y enviar PDF
+        byte[] pdfBytes = PdfGenerator.generatePaymentInvoice(username, paymentMethod, total);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=\"pago-ejecutado.pdf\"");
+        response.getOutputStream().write(pdfBytes);
+        response.getOutputStream().flush();
     }
-
-    // Guardamos los cambios en la base de datos
-    userRepository.save(user);
-
-    session.removeAttribute("cart_movie_data");
-    session.removeAttribute("total_price");
-
-    return "redirect:/cart/confirmation";
-}
 
     @GetMapping("/confirmation")
     public String confirmationPage(Model model) {
