@@ -19,15 +19,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Controller
 @RequestMapping("/cart")
 public class CartController {
+
     @Autowired
     private PaymentService paymentService;
 
@@ -144,12 +145,27 @@ public class CartController {
         session.removeAttribute("cart_movie_data");
         session.removeAttribute("total_price");
 
-        // ✅ Generar y enviar PDF
-        byte[] pdfBytes = PdfGenerator.generatePaymentInvoice(username, paymentMethod, total);
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=\"pago-ejecutado.pdf\"");
-        response.getOutputStream().write(pdfBytes);
-        response.getOutputStream().flush();
+        // ✅ Generar PDF y Excel
+        Map<String, byte[]> files = PdfGenerator.generatePaymentDocuments(username, paymentMethod, total);
+
+        // ✅ Empaquetar ZIP y enviar como descarga
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", "attachment; filename=\"comprobantes.zip\"");
+
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ZipOutputStream zipOut = new ZipOutputStream(baos)) {
+
+            for (Map.Entry<String, byte[]> entry : files.entrySet()) {
+                ZipEntry zipEntry = new ZipEntry(entry.getKey());
+                zipOut.putNextEntry(zipEntry);
+                zipOut.write(entry.getValue());
+                zipOut.closeEntry();
+            }
+
+            zipOut.finish();
+            response.getOutputStream().write(baos.toByteArray());
+            response.getOutputStream().flush();
+        }
     }
 
     @GetMapping("/confirmation")
