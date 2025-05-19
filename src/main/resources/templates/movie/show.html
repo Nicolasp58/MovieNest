@@ -26,8 +26,8 @@
                 <div class="col-md-8 d-flex flex-column" style="min-height: 100%;"> 
                     <div class="card-body text-black"> 
                         <h3 class="card-title" style="padding-bottom: 5px; border-bottom: 2px solid black !important;" th:text="${movie.name}">Movie Name</h3>
-                        <h5 class="card-genre" style="padding-bottom: 5px;" th:text="${movie.genre}" th:text="#{movie.details.genre}">Movie Genre</h5> 
-                        <h6 class="card-description" style="padding-bottom: 5px;" th:text="${movie.description}" th:text="#{movie.details.description}">Movie Description</h6>
+                        <h5 class="card-genre" style="padding-bottom: 5px;" th:text="${movie.genre}" >Movie Genre</h5> 
+                        <h6 class="card-description" style="padding-bottom: 5px;" th:text="${movie.description}" >Movie Description</h6>
                         <p class="card-text" style="padding-bottom: 5px;"> 
                             <strong th:text="#{movie.details.price}">Price: $</strong> 
                             <span th:text="${movie.price}">0</span> 
@@ -60,7 +60,7 @@
                             <strong th:text="#{movie.reviews.title}">Rating: </strong>
                             <span th:each="i : ${#numbers.sequence(1, review.rating)}">⭐</span>
                         </p>                    
-                        <p class="mb-0" th:text="${review.description}" th:text="#{movie.reviews.description}">Review description</p>
+                        <p class="mb-0" th:text="${review.description}">Review description</p>
                     </li>
                 </ul>
             </div>
