@@ -29,16 +29,9 @@
                         <h5 class="card-genre" style="padding-bottom: 5px;" th:text="${movie.genre}">Movie Genre</h5> 
                         <h6 class="card-description" style="padding-bottom: 5px;" th:text="${movie.description}">Movie Description</h6>
                         <p class="card-text" style="padding-bottom: 5px;"> 
-                            <strong>Price: $</strong> 
+                            <strong th:text="#{bought.price}">Price: $</strong> 
                             <span th:text="${movie.price}">0</span> 
                         </p> 
-                    </div> 
-                    <div class="row" style="padding: 16px;">
-                        <div class="col">
-                            <form th:action="@{'/cart/add/' + ${movie.id}}" method="post"> 
-                                <button type="submit" class="btn btn-primary" style="margin-left: 15px;">Add to Cart</button> 
-                            </form> 
-                        </div>
                     </div> 
                 </div> 
             </div>
@@ -48,16 +41,16 @@
     <div class="container my-4">
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0 text-black">Reviews</h5>
+                <h5 class="mb-0 text-black" th:text="#{bought.reviews.title}">Reviews</h5>
             </div>
             <div class="card-body">
                 <div th:if="${#lists.isEmpty(movie.reviews)}">
-                    <p class="text-muted">No reviews available.</p>
+                    <p class="text-muted" th:text="#{bought.reviews.noReviews}">No reviews available.</p>
                 </div>
                 <ul class="list-group list-group-flush" th:if="${!#lists.isEmpty(movie.reviews)}">
                     <li class="list-group-item" th:each="review : ${movie.reviews}">
                         <p class="mb-0">
-                            <strong>Rating: </strong>
+                            <strong th:text="#{bought.reviews.rating}">Rating: </strong>
                             <span th:each="i : ${#numbers.sequence(1, review.rating)}">⭐</span>
                         </p>                    
                         <p class="mb-0" th:text="${review.description}">Review description</p>
@@ -69,18 +62,18 @@
     <div class="container my-4">
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0 text-black">Add a Review</h5>
+                <h5 class="mb-0 text-black" th:text="#{bought.reviews.add}">Add a Review</h5>
             </div>
             <div class="card-body">
                 <form th:action="@{/movies/{id}/reviews(id=${movie.id})}" method="post">
                     <div class="mb-3 text-black">
-                        <label for="reviewDescription" class="form-label">Your Review</label>
+                        <label for="reviewDescription" class="form-label" th:text="#{bought.reviews.yourReview}">Your Review</label>
                         <textarea class="form-control" id="reviewDescription" name="description" rows="3" required></textarea>
                     </div>
                     <div class="mb-3 text-black">
-                        <label for="reviewRating" class="form-label">Rating (1-5)</label>
+                        <label for="reviewRating" class="form-label" th:text="#{bought.reviews.addRating}">Rating (1-5)</label>
                         <select class="form-select" id="reviewRating" name="rating" required>
-                            <option value="" disabled selected>Select a rating</option>
+                            <option value="" disabled selected th:text="#{bought.reviews.selectRating}">Select a rating</option>
                             <option value="1">1 - ⭐</option>
                             <option value="2">2 - ⭐⭐</option>
                             <option value="3">3 - ⭐⭐⭐</option>
@@ -88,7 +81,7 @@
                             <option value="5">5 - ⭐⭐⭐⭐⭐</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit review</button>
+                    <button type="submit" class="btn btn-primary" th:text="#{bought.reviews.submitReview}">Submit review</button>
                 </form>
             </div>
         </div>

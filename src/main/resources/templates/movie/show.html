@@ -57,7 +57,7 @@
                 <ul class="list-group list-group-flush" th:if="${!#lists.isEmpty(movie.reviews)}">
                     <li class="list-group-item" th:each="review : ${movie.reviews}">
                         <p class="mb-0">
-                            <strong th:text="#{movie.reviews.title}">Rating: </strong>
+                            <strong th:text="#{movie.review.rating}">Rating: </strong>
                             <span th:each="i : ${#numbers.sequence(1, review.rating)}">⭐</span>
                         </p>                    
                         <p class="mb-0" th:text="${review.description}">Review description</p>
