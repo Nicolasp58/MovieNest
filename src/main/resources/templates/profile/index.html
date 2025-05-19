@@ -40,7 +40,7 @@
         }
     </style>
 
-    <title th:text="${title} ?: 'Your Profile'"></title>
+    <title th:text="#{profile.title}">Your Profile</title>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
@@ -49,16 +49,16 @@
     <div class="profile-container mb-3">
         <img th:src="@{/img/foto.png}" alt="Profile Picture" class="rounded-circle" width="60" height="60">
         <div class="user-info">
-            <h4 class="mb-0">Hello, <span th:text="${username}">User</span>!</h4>
-            <a href="/logout">Log out</a>
+            <h4 class="mb-0" th:text="#{profile.name}">Welcome</h4>
+            <a href="/logout" th:text="#{profile.logout}">Log out</a>
         </div>
     </div>
 
-    <h2 class="text-center" style="width: fit-content; border-bottom: 2px solid white;">Your profile</h2>
+    <h2 class="text-center" style="width: fit-content; border-bottom: 2px solid white;" th:text="#{profile.title}">Your profile</h2>
 
-    <h4 class="py-2">Your Movies:</h4>
-    <div class="alert alert-primary d-inline-block my-2" role="alert" th:if="${#lists.isEmpty(purchasedMovies)}">
-        You don't have any movies.
+    <h4 class="py-2" th:text="#{profile.movies}">Your Movies:</h4>
+    <div class="alert alert-primary d-inline-block my-2" role="alert" th:if="${#lists.isEmpty(purchasedMovies)}" th:text="#{profile.noMovies}">
+        You don't have any movies
     </div>
 
     <div class="row" th:if="${not #lists.isEmpty(purchasedMovies)}">

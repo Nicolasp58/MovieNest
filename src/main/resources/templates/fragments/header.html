@@ -27,8 +27,7 @@
           </a>
         </div>
 
-        <!-- Language Switcher -->
-        <form method="get" th:action="@{/change-language}" class="ms-3 d-flex align-items-center">
+        <form method="get" th:action="@{/change-language}" class="ms-3 d-flex align-items-center navbar">
           <select name="lang" onchange="this.form.submit()" class="form-select form-select-sm">
             <option value="en" th:selected="${#locale.language == 'en'}">English</option>
             <option value="es" th:selected="${#locale.language == 'es'}">Español</option>

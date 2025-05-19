@@ -6,38 +6,38 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/app.css?v=2}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <title th:text="${title}"></title>
+    <title th:text="#{cart.Title}"></title>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
 <div class="container my-5">
-    <h2>Movies in Cart</h2>
+    <h2 th:text="#{cart.title}">Movies in Cart</h2>
     <ul>
         <li th:each="entry : ${cartMovies}">
-            <span>Name: <span th:text="${entry.value.name}"></span> - </span>
-            <span>Price: $<span th:text="${entry.value.price}"></span></span>
+            <span><span th:text="${entry.value.name}"></span> - </span>
+            <span>$<span th:text="${entry.value.price}"></span></span>
         </li>
     </ul>
 
     <div th:if="${not #maps.isEmpty(cartMovies)}">
-        <h4>Total Price: $<span th:text="${totalPrice}"></span></h4>
+        <h4 th:text="#{cart.total}">Total Price: $<span th:text="${totalPrice}"></span></h4>
 
         <form th:action="@{/cart/checkout}" method="post">
-            <label for="paymentMethod">Choose Payment Method:</label>
+            <label for="paymentMethod" th:text="#{cart.chooseMethod}">Choose Payment Method:</label>
             <select name="paymentMethod" id="paymentMethod" class="form-control mb-2" style="width: 200px;">
-                <option value="Credit Card">Credit Card</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Credit Card" th:text="#{cart.cc}">Credit Card</option>
+                <option value="PayPal" th:text="#{cart.pp}">PayPal</option>
+                <option value="Bank Transfer" th:text="#{cart.bt}">Bank Transfer</option>
             </select>
-            <button type="submit" class="btn btn-success" style="margin-top: 15px; margin-bottom: 15px;">Pay</button>
+            <button type="submit" class="btn btn-success" style="margin-top: 15px; margin-bottom: 15px;" th:text="#{cart.pay}">Pay</button>
         </form>
     </div>
 
-    <div class="alert alert-primary d-inline-block" role="alert" th:if="${#maps.isEmpty(cartMovies)}">
+    <div class="alert alert-primary d-inline-block" role="alert" th:if="${#maps.isEmpty(cartMovies)}" th:text="#{cart.empty}">
         Cart is empty.
     </div>
-    <a th:if="${not #maps.isEmpty(cartMovies)}" class="btn btn-danger" th:href="@{/cart/removeAll}">Remove all movies from cart</a>
+    <a th:if="${not #maps.isEmpty(cartMovies)}" class="btn btn-danger" th:href="@{/cart/removeAll}" th:text="#{cart.removeAll}">Remove all movies from cart</a>
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
