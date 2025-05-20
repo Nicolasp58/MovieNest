@@ -102,4 +102,12 @@ public String index(Model model, @RequestParam(defaultValue = "0") int page) {
         return "redirect:/movies";
     }
 
+    @GetMapping("/movies-json")
+    public String getMoviesJson(Model model) {
+        List<Movie> movies = movieRepository.findAll();
+        model.addAttribute("movies", movies);
+        return "movie/movies-json";
+    }
+
+
 }
