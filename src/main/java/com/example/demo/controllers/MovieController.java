@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import com.example.demo.models.Movie;
 import com.example.demo.repositories.MovieRepository;
 import com.example.demo.interfaces.ImageStorage;
@@ -22,14 +23,20 @@ public class MovieController {
     @Autowired
     private ImageStorage imageStorage;
 
-    @GetMapping("/movies")
-    public String index(Model model) {
-        List<Movie> movies = movieRepository.findAll();
-        model.addAttribute("title", "Movies - MovieNest");
-        model.addAttribute("subtitle", "List of movies");
-        model.addAttribute("movies", movies);
-        return "movie/index";
-    }
+  @GetMapping("/movies")
+public String index(Model model, @RequestParam(defaultValue = "0") int page) {
+    int pageSize = 6;
+    Page<Movie> moviePage = movieRepository.findAll(PageRequest.of(page, pageSize));
+
+    model.addAttribute("title", "Movies - MovieNest");
+    model.addAttribute("subtitle", "List of movies");
+    model.addAttribute("movies", moviePage.getContent());
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", moviePage.getTotalPages());
+
+    return "movie/index";
+}
+
 
     @GetMapping("/movies/{id}")
     public String show(@PathVariable("id") Long id, Model model) {

@@ -22,7 +22,7 @@
     
     <!-- Botón para generar fakers -->
     <div class="mb-3 text-center">
-        <a href="/movies/faker" class="btn btn-success">
+        <a href="/movies/faker" class="btn btn-dark">
             🎬 Generar Películas Falsas
         </a>
     </div>
@@ -38,7 +38,26 @@
                 </div>
             </a> 
         </div> 
-    </div> 
+    </div>
+
+    <!-- Paginación -->
+    <div class="text-center mt-4">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/movies(page=${currentPage - 1})}">Anterior</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/movies(page=${i})}" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{/movies(page=${currentPage + 1})}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
 </div> 
 
 <div th:replace="~{fragments/footer :: footer}"></div>
