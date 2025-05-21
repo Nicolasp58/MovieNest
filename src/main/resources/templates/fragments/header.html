@@ -33,6 +33,22 @@
             <option value="es" th:selected="${#locale.language == 'es'}">Español</option>
           </select>
         </form>
+
+        <form method="get" th:action="@{/change-currency}" class="ms-3 d-flex align-items-center navbar">
+          <select name="currency" onchange="this.form.submit()" class="form-select form-select-sm">
+            <option value="USD" th:selected="${session.selectedCurrency == 'USD' || session.selectedCurrency == null}">USD $</option>
+            <option value="EUR" th:selected="${session.selectedCurrency == 'EUR'}">EUR €</option>
+            <option value="GBP" th:selected="${session.selectedCurrency == 'GBP'}">GBP £</option>
+            <option value="JPY" th:selected="${session.selectedCurrency == 'JPY'}">JPY ¥</option>
+            <option value="CNY" th:selected="${session.selectedCurrency == 'CNY'}">CNY ¥</option>
+            <option value="AUD" th:selected="${session.selectedCurrency == 'AUD'}">AUD $</option>
+            <option value="CAD" th:selected="${session.selectedCurrency == 'CAD'}">CAD $</option>
+            <option value="COP" th:selected="${session.selectedCurrency == 'COP'}">COP $</option>
+            <option value="MXN" th:selected="${session.selectedCurrency == 'MXN'}">MXN $</option>
+            <option value="BRL" th:selected="${session.selectedCurrency == 'BRL'}">BRL R$</option>
+          </select>
+        </form>
+        
       </div>
     </div>
   </nav>

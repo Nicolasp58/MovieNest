@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.services.CurrencyConverterService;
 import com.example.demo.services.PaymentService;
 import com.example.demo.models.Movie;
 import com.example.demo.models.Payment;
@@ -40,6 +41,9 @@ public class CartController {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private CurrencyConverterService currencyConverterService; // Nuevo: inyección del servicio de conversión
 
     @GetMapping
     public String index(HttpSession session, Model model) {
@@ -92,90 +96,102 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-public String checkout(@RequestParam String paymentMethod,
-                       HttpSession session) throws IOException {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-        return "redirect:/auth/login";
-    }
+    public String checkout(@RequestParam String paymentMethod,
+                           HttpSession session) throws IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            return "redirect:/auth/login";
+        }
 
-    String username = auth.getName();
-    Optional<User> userOpt = userRepository.findByUsername(username);
-    if (userOpt.isEmpty()) {
-        return "redirect:/cart";
-    }
-    User user = userOpt.get();
+        String username = auth.getName();
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
+            return "redirect:/cart";
+        }
+        User user = userOpt.get();
 
-    Map<Long, Integer> cartData = (Map<Long, Integer>) session.getAttribute("cart_movie_data");
-    if (cartData == null || cartData.isEmpty()) {
-        return "redirect:/cart";
-    }
+        Map<Long, Integer> cartData = (Map<Long, Integer>) session.getAttribute("cart_movie_data");
+        if (cartData == null || cartData.isEmpty()) {
+            return "redirect:/cart";
+        }
 
-    double total = 0.0;
-    for (Long movieId : cartData.keySet()) {
-        Optional<Movie> movieOpt = movieRepository.findById(movieId);
-        if (movieOpt.isPresent()) {
-            Movie movie = movieOpt.get();
-            double amount = movie.getPrice() * cartData.get(movieId);
-            Payment payment = new Payment();
-            payment.setTotalAmount(amount);
-            payment.setPaymentMethod(paymentMethod);
-            payment.setMovie(movie);
-            paymentService.savePayment(payment);
-            total += amount;
-            if (!user.getPurchasedMoviesIds().contains(movieId)) {
-                user.addPurchasedMovie(movieId);
+        double total = 0.0;
+        for (Long movieId : cartData.keySet()) {
+            Optional<Movie> movieOpt = movieRepository.findById(movieId);
+            if (movieOpt.isPresent()) {
+                Movie movie = movieOpt.get();
+                double amount = movie.getPrice() * cartData.get(movieId);
+                Payment payment = new Payment();
+                payment.setTotalAmount(amount);
+                payment.setPaymentMethod(paymentMethod);
+                payment.setMovie(movie);
+                paymentService.savePayment(payment);
+                total += amount;
+                if (!user.getPurchasedMoviesIds().contains(movieId)) {
+                    user.addPurchasedMovie(movieId);
+                }
             }
         }
-    }
 
-    userRepository.save(user);
-    session.removeAttribute("cart_movie_data");
-    session.removeAttribute("total_price");
-
-    // 1) Generar PDF y Excel
-    Map<String, byte[]> files = PdfGenerator.generatePaymentDocuments(username, paymentMethod, total);
-
-    // 2) Empaquetar en ZIP
-    byte[] zipBytes;
-    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-         ZipOutputStream zipOut = new ZipOutputStream(baos)) {
-        for (Map.Entry<String, byte[]> entry : files.entrySet()) {
-            ZipEntry zipEntry = new ZipEntry(entry.getKey());
-            zipOut.putNextEntry(zipEntry);
-            zipOut.write(entry.getValue());
-            zipOut.closeEntry();
+        userRepository.save(user);
+        session.removeAttribute("cart_movie_data");
+        session.removeAttribute("total_price");
+        
+        // Obtener la moneda seleccionada por el usuario
+        String selectedCurrency = (String) session.getAttribute("selectedCurrency");
+        if (selectedCurrency == null) {
+            selectedCurrency = "USD"; // Valor por defecto
         }
-        zipOut.finish();
-        zipBytes = baos.toByteArray();
+        
+        // 1) Generar PDF y Excel con la moneda seleccionada
+        Map<String, byte[]> files = PdfGenerator.generatePaymentDocuments(
+            username, 
+            paymentMethod, 
+            total, 
+            selectedCurrency, 
+            currencyConverterService
+        );
+
+        // 2) Empaquetar en ZIP
+        byte[] zipBytes;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ZipOutputStream zipOut = new ZipOutputStream(baos)) {
+            for (Map.Entry<String, byte[]> entry : files.entrySet()) {
+                ZipEntry zipEntry = new ZipEntry(entry.getKey());
+                zipOut.putNextEntry(zipEntry);
+                zipOut.write(entry.getValue());
+                zipOut.closeEntry();
+            }
+            zipOut.finish();
+            zipBytes = baos.toByteArray();
+        }
+
+        // 3) Guardar ZIP en sesión
+        session.setAttribute("paymentZip", zipBytes);
+
+        // 4) Redirigir a /cart/confirmation
+        return "redirect:/cart/confirmation";
     }
 
-    // 3) Guardar ZIP en sesión
-    session.setAttribute("paymentZip", zipBytes);
+    @GetMapping("/downloadZip")
+    public void downloadZip(HttpSession session, HttpServletResponse response) throws IOException {
+        byte[] zipBytes = (byte[]) session.getAttribute("paymentZip");
+        if (zipBytes == null) {
+            response.sendRedirect("/cart");
+            return;
+        }
 
-    // 4) Redirigir a /cart/confirmation
-    return "redirect:/cart/confirmation";
-}
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", "attachment; filename=\"comprobantes.zip\"");
+        response.getOutputStream().write(zipBytes);
+        response.getOutputStream().flush();
 
-@GetMapping("/downloadZip")
-public void downloadZip(HttpSession session, HttpServletResponse response) throws IOException {
-    byte[] zipBytes = (byte[]) session.getAttribute("paymentZip");
-    if (zipBytes == null) {
-        response.sendRedirect("/cart");
-        return;
+        // (Opcional) quitar de sesión
+        session.removeAttribute("paymentZip");
     }
 
-    response.setContentType("application/zip");
-    response.setHeader("Content-Disposition", "attachment; filename=\"comprobantes.zip\"");
-    response.getOutputStream().write(zipBytes);
-    response.getOutputStream().flush();
-
-    // (Opcional) quitar de sesión
-    session.removeAttribute("paymentZip");
-}
-
-@GetMapping("/confirmation")
-public String confirmationPage() {
-    return "cart/confirmation";
-}
+    @GetMapping("/confirmation")
+    public String confirmationPage() {
+        return "cart/confirmation";
+    }
 }

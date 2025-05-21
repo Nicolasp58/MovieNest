@@ -29,8 +29,8 @@
                         <h5 class="card-genre" style="padding-bottom: 5px;" th:text="${movie.genre}">Movie Genre</h5> 
                         <h6 class="card-description" style="padding-bottom: 5px;" th:text="${movie.description}">Movie Description</h6>
                         <p class="card-text" style="padding-bottom: 5px;"> 
-                            <strong th:text="#{bought.price}">Price: $</strong> 
-                            <span th:text="${movie.price}">0</span> 
+                            <strong th:text="#{bought.price}">Price: </strong> 
+                            <span th:text="${#currencyUtil.format(movie.price, 'USD', selectedCurrency)}">0</span>
                         </p> 
                     </div> 
                 </div> 

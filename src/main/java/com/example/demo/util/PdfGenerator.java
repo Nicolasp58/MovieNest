@@ -1,5 +1,6 @@
 package com.example.demo.util;
 
+import com.example.demo.services.CurrencyConverterService;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
@@ -12,11 +13,28 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
+import java.util.Currency;
+import java.text.NumberFormat;
 
 public class PdfGenerator {
 
-    public static Map<String, byte[]> generatePaymentDocuments(String username, String paymentMethod, double total) throws IOException {
+    public static Map<String, byte[]> generatePaymentDocuments(
+            String username, 
+            String paymentMethod, 
+            double totalUSD, 
+            String selectedCurrency, 
+            CurrencyConverterService currencyService) throws IOException {
+        
         Map<String, byte[]> files = new HashMap<>();
+        
+        // Convertir el monto a la moneda seleccionada
+        double convertedAmount = currencyService.convertPrice(totalUSD, "USD", selectedCurrency);
+        
+        // Formatear según la moneda
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        formatter.setCurrency(Currency.getInstance(selectedCurrency));
+        String formattedAmount = formatter.format(convertedAmount);
 
         // ✅ Generar PDF
         ByteArrayOutputStream pdfBaos = new ByteArrayOutputStream();
@@ -27,7 +45,8 @@ public class PdfGenerator {
         document.add(new Paragraph("✅ PAGO EJECUTADO").setBold().setFontSize(16));
         document.add(new Paragraph("Usuario: " + username));
         document.add(new Paragraph("Método de pago: " + paymentMethod));
-        document.add(new Paragraph("Total pagado: $" + String.format("%.2f", total)));
+        document.add(new Paragraph("Total pagado: " + formattedAmount));
+        document.add(new Paragraph("Moneda: " + selectedCurrency));
 
         document.close();
         files.put("pago-ejecutado.pdf", pdfBaos.toByteArray());
@@ -51,7 +70,11 @@ public class PdfGenerator {
 
         Row row3 = sheet.createRow(3);
         row3.createCell(0).setCellValue("Total pagado");
-        row3.createCell(1).setCellValue(String.format("%.2f", total));
+        row3.createCell(1).setCellValue(formattedAmount);
+        
+        Row row4 = sheet.createRow(4);
+        row4.createCell(0).setCellValue("Moneda");
+        row4.createCell(1).setCellValue(selectedCurrency);
 
         workbook.write(excelBaos);
         workbook.close();

@@ -19,9 +19,7 @@
             <span>
                 <span th:text="${entry.value.name}">Movie Name</span> - 
             </span>
-            <span>
-                $<span th:text="${entry.value.price}">0.00</span>
-            </span>
+            <span th:text="${#currencyUtil.format(entry.value.price, 'USD', selectedCurrency)}">0.00</span>
         </li>
     </ul>
 
@@ -29,7 +27,7 @@
         <!-- Total del carrito -->
         <h4 class="mt-4">
             <strong th:text="#{cart.total}">Total Price:</strong>
-            $<span th:text="${totalPrice}">0.00</span>
+            <span th:text="${#currencyUtil.format(totalPrice, 'USD', selectedCurrency)}">0.00</span>
         </h4>
 
         <form th:action="@{/cart/checkout}" method="post">
