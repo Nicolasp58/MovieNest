@@ -30,13 +30,13 @@ services:
     restart: unless-stopped
 
   moviesnest-app:
-    image: isabelaosorio/moviesnest:latest  # Usar imagen de Docker Hub
+    image: nicolasp58/moviesnest:latest  # Usar imagen de Docker Hub
     container_name: moviesnest-app
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/peliculas
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: nicolaspj
-      CURRENCY_API_KEY: ${CURRENCY_API_KEY}
+      CURRENCY_API_KEY: 3685a842ed0b5dce0bef01b8
     ports:
       - "8080:8080"
     depends_on:
