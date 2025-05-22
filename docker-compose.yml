@@ -13,6 +13,7 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - app-network
+    restart: unless-stopped
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -26,9 +27,10 @@ services:
       - mysql
     networks:
       - app-network
+    restart: unless-stopped
 
   moviesnest-app:
-    build: .
+    image: isabelaosorio/moviesnest:latest  # Usar imagen de Docker Hub
     container_name: moviesnest-app
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/peliculas
@@ -41,6 +43,7 @@ services:
       - mysql
     networks:
       - app-network
+    restart: unless-stopped
 
 volumes:
   mysql_data:
