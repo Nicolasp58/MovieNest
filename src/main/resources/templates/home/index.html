@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <title th:text="#{app.title}">MovieNest></title>
+
     
 </head>
 <body>
@@ -23,9 +24,11 @@
             <h1 class="text-white fw-bold" th:text="#{home.welcome}">WELCOME TO MOVIENEST!</h1>
             <h2 class="text-white fw-bold" style="margin-bottom: 15px;" th:text="#{home.subtitle}">Home of the best movies</h2>
             <div>
+                <a th:href="@{/movies-json}"  class="btn btn-primary text-white" style="margin-right: 10px;" ><b th:text="#{footer.link.json}">Movie list</b></a>
                 <a class="btn btn-primary text-white" style="margin-right: 10px;" th:href="@{/movies}"><b th:text="#{home.button.explore}">Explore Movies</b></a>
                 <a class="btn btn-primary text-white" style="margin-left: 10px;" th:href="@{/profile}"><b th:text="#{home.button.profile}">Profile</b></a>
             </div>
+           
         </div>
     </div>
 
